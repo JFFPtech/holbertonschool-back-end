@@ -16,7 +16,7 @@ def get_todo_list_data(employee_id):
         print(f"No employee record found for ID: {employee_id}")
         return
     
-    todo_response = requests.get(f"{base_url}/todo", params={'userId': employee_id})
+    todo_response = requests.get(f"{base_url}/todos", params={'userId': employee_id})
     todo_data = todo_response.json()
 
     total_tasks = len(todo_data)
