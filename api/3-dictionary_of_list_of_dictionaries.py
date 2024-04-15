@@ -27,3 +27,6 @@ def fetch_all_tasks():
         } for task in todo_data]
 
         all_tasks[str(user_id)] = user_tasks
+
+    with open('todo_all_employees.json', 'w') as file:
+        json.dump(all_tasks, file, indent=4)
