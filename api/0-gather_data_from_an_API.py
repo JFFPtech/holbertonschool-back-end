@@ -33,4 +33,5 @@ for task in todos_data:
     if task['completed']:
         print('\t ' + task['title'])
 
-if 
+if __name__ == '__main__':
+    pass
