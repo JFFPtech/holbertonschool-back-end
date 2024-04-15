@@ -31,7 +31,7 @@ def get_todo_list_data(employee_id):
                 user_data.get('username'),
                 task.get('completed'),
                 task.get('title')
-            ])        
+            ])
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
