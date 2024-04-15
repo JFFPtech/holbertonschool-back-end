@@ -1,27 +1,17 @@
 #!/usr/bin/python3
-"""Module for export data in the json format."""
-import json
+"""
+Fetch data from the corresponding API"""
 import requests
-import sys
+from sys import argv
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
+    tasks = requests.get("https://jsonplaceholder.typicode.com/todos").json()
     user = requests.get("https://jsonplaceholder.typicode.com/users/{}"
-                        .format(sys.argv[1])).json()
-    todo = requests.get("https://jsonplaceholder.typicode.com/todos?userId={}"
-                        .format(sys.argv[1])).json()
-
-    list = []
-    for element in todo:
-        aux_dict = {}
-        aux_dict['task'] = element.get('title')
-        aux_dict['completed'] = element.get('completed')
-        aux_dict['username'] = user.get('username')
-        list.append(aux_dict)
-    result_json = {}
-    result_json[sys.argv[1]] = list
-
-    s_json = json.dumps(result_json)
-
-    with open('{}.json'.format(sys.argv[1]), 'w') as f:
-        f.write(s_json)
+                        .format(int(argv[1]))).json()
+    completed_tasks = [i for i in tasks if i.get('completed') and
+                       i.get('userId') == int(argv[1])]
+    total_tasks = len([i for i in tasks if i['userId'] == int(argv[1])])
+    print("Employee {} is done with tasks({}/{}):"
+          .format(str(user.get('name')), len(completed_tasks), total_tasks))
+    for i in completed_tasks:
+        print("\t {}".format(i.get('title')))
