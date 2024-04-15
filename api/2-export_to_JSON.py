@@ -38,3 +38,13 @@ def get_todo_list_data(employee_id):
         json.dump(json_file_data, file, indent=4)
 
     print(f"Data exported to {json_file_name}")
+
+    if __name__ == "__main__":
+        if len(sys.argv) != 2:
+            print("Usage: 2-export_to_JSON.py <employee_id>")
+            sys.exit(1)
+        try:
+            employee_id = int(sys.argv[1])
+            export_todo_list_to_json(employee_id)
+        except ValueError:
+            print("Employee ID must be an integer")

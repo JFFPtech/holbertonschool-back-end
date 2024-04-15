@@ -37,4 +37,4 @@ if __name__ == "__main__":
         employee_id = int(sys.argv[1])
         get_todo_list_data(employee_id)
     except ValueError:
-        print("Employee ID must be an integer")
+        print("Employee ID must be an integer!")
