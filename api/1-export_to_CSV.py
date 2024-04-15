@@ -20,6 +20,11 @@ def get_todo_list_data(employee_id):
     todo_response = requests.get(f"{base_url}/todos", params={'userId': employee_id})
     todo_data = todo_response.json()
 
+    csv_file_name = f"{employee_id}.csv"
+
+    with open(csv_file_name, mode='w') as file:
+        writer = csv.writer(file, quoting=csv.QUOTE_ALL)        
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: 1-export_to_CSV.py <employee_id>")
