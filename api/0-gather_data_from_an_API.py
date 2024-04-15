@@ -22,4 +22,9 @@ def get_todo_list_data(employee_id):
     total_tasks = len(todo_data)
     completed_tasks = sum(1 for task in todo_data if task['completed'])
 
-    
+    employee_name = user_data.get['name']
+
+    print(f"Employee {employee_name} is done with tasks({completed_tasks}/{total_tasks}):")
+    for task in todo_data:
+        if task['completed']:
+            print(f"\t {task['title']}")
