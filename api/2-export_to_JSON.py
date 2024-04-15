@@ -35,3 +35,6 @@ def get_todo_list_data(employee_id):
     json_file_name = f"{employee_id}.json"
 
     with open(json_file_name, mode='w') as file:
+        json.dump(json_file_data, file, indent=4)
+
+    print(f"Data exported to {json_file_name}")
