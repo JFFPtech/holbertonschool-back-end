@@ -45,6 +45,6 @@ def get_todo_list_data(employee_id):
             sys.exit(1)
         try:
             employee_id = int(sys.argv[1])
-            export_todo_list_to_json(employee_id)
+            get_todo_list_data(employee_id)
         except ValueError:
             print("Employee ID must be an integer")
