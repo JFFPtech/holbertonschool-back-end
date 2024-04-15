@@ -1,17 +1,40 @@
 #!/usr/bin/python3
-"""
-Fetch data from the corresponding API"""
-import requests
-from sys import argv
+""" Gather data from an API """
 
-if __name__ == '__main__':
-    tasks = requests.get("https://jsonplaceholder.typicode.com/todos").json()
-    user = requests.get("https://jsonplaceholder.typicode.com/users/{}"
-                        .format(int(argv[1]))).json()
-    completed_tasks = [i for i in tasks if i.get('completed') and
-                       i.get('userId') == int(argv[1])]
-    total_tasks = len([i for i in tasks if i['userId'] == int(argv[1])])
-    print("Employee {} is done with tasks({}/{}):"
-          .format(str(user.get('name')), len(completed_tasks), total_tasks))
-    for i in completed_tasks:
-        print("\t {}".format(i.get('title')))
+import requests
+import sys
+
+def get_todo_list_data(employee_id):
+    """ Get the todo list data from a given employee id """
+    
+    base_url = 'https://jsonplaceholder.typicode.com'
+
+    user_response = requests.get(f"{base_url}/users/{employee_id}")
+    user_data = user_response.json()
+
+    if not user_data:
+        print(f"No employee record found for ID: {employee_id}")
+        return
+    
+    todo_response = requests.get(f"{base_url}/todos", params={'userId': employee_id})
+    todo_data = todo_response.json()
+
+    total_tasks = len(todo_data)
+    completed_tasks = sum(1 for task in todo_data if task['completed'])
+
+    employee_name = user_data.get('name')
+
+    print(f"Employee {employee_name} is done with tasks({completed_tasks}/{total_tasks}):")
+    for task in todo_data:
+        if task['completed']:
+            print(f"\t {task['title']}")
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: 0-gather_data_from_an_API.py <employee_id>")
+        sys.exit(1)
+    try:
+        employee_id = int(sys.argv[1])
+        get_todo_list_data(employee_id)
+    except ValueError:
+        print("Employee ID must be an integer")
