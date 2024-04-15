@@ -1,49 +1,40 @@
 #!/usr/bin/python3
-"""
-This module uses Python to make requests to a REST API.
-fix
-It fetches data about a specific employee's tasks
-and prints a summary of the tasks completed and the
-titles of the completed tasks.
-"""
+""" Gather data from an API """
+
 import requests
 import sys
 
+def get_todo_list_data(employee_id):
+    """ Get the todo list data from a given employee id """
+    
+    base_url = 'https://jsonplaceholder.typicode.com'
 
-# Get the employee ID from the command line arguments
-employee_id = sys.argv[1]
+    user_response = requests.get(f"{base_url}/users/{employee_id}")
+    user_data = user_response.json()
 
-# Send a GET request to the API to get the user data
-user_response = requests.get(
-    'https://jsonplaceholder.typicode.com/users/' + employee_id)
+    if not user_data:
+        print(f"No employee record found for ID: {employee_id}")
+        return
+    
+    todo_response = requests.get(f"{base_url}/todos", params={'userId': employee_id})
+    todo_data = todo_response.json()
 
-# Parse the response data as JSON
-data = user_response.json()
+    total_tasks = len(todo_data)
+    completed_tasks = sum(1 for task in todo_data if task['completed'])
 
-# Extract the employee's name from the data
-employee_name = data['name']
+    employee_name = user_data.get('name')
 
-# Send another GET request to the API to get the todo data
-todos_response = requests.get(
-    'https://jsonplaceholder.typicode.com/todos?userId=' + employee_id)
+    print(f"Employee {employee_name} is done with tasks({completed_tasks}/{total_tasks}):")
+    for task in todo_data:
+        if task['completed']:
+            print(f"\t {task['title']}")
 
-# Parse the todo data as JSON
-todos_data = todos_response.json()
-
-# Calculate the total number of tasks
-total_todos = str(len(todos_data))
-
-# Calculate the number of completed tasks
-completed_todos = str(sum(1 for task in todos_data if task['completed']))
-
-# Print the first line of the output
-print("Employee " + employee_name + " is done with tasks(" +
-      completed_todos + "/" + total_todos + "):")
-
-# Print the title of each completed task
-for task in todos_data:
-    if task['completed']:
-        print('\t ' + task['title'])
-
-if __name__ == '__main__':
-    pass
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: 0-gather_data_from_an_API.py <employee_id>")
+        sys.exit(1)
+    try:
+        employee_id = int(sys.argv[1])
+        get_todo_list_data(employee_id)
+    except ValueError:
+        print("Employee ID must be an integer")
