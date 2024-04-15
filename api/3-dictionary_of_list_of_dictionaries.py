@@ -30,3 +30,8 @@ def fetch_all_tasks():
 
     with open('todo_all_employees.json', 'w') as file:
         json.dump(all_tasks, file, indent=4)
+
+    print("Data exported to todo_all_employees.json")
+
+if __name__ == "__main__":
+    fetch_all_tasks()
