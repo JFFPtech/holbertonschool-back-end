@@ -23,7 +23,15 @@ def get_todo_list_data(employee_id):
     csv_file_name = f"{employee_id}.csv"
 
     with open(csv_file_name, mode='w') as file:
-        writer = csv.writer(file, quoting=csv.QUOTE_ALL)        
+        writer = csv.writer(file, quoting=csv.QUOTE_ALL)
+
+        for task in todo_data:
+            writer.writerow([
+                employee_id,
+                user_data.get('username'),
+                task.get('completed'),
+                task.get('title')
+            ])        
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
