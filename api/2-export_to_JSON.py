@@ -27,3 +27,11 @@ def get_todo_list_data(employee_id):
             "completed": task.get('completed'),
             "username": user_data.get('username')
         })
+    
+    json_file_data = {
+        str(employee_id): user_tasks
+    }
+
+    json_file_name = f"{employee_id}.json"
+
+    with open(json_file_name, mode='w') as file:
