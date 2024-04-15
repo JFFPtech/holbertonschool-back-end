@@ -20,12 +20,10 @@ def fetch_all_tasks():
         todo_response = requests.get(f"{base_url}/todos", params={'userId': user_id})
         todo_data = todo_response.json()
 
-        user_tasks = []
-        for task in todo_data:
-            user_tasks.append({
-                "task": task['title'],
-                "completed": task['completed'],
-                "username": username
-            })
+        user_tasks = [{
+            "username": username,
+            "task": task['title'],
+            "completed": task['completed']
+        } for task in todo_data]
 
         all_tasks[str(user_id)] = user_tasks
