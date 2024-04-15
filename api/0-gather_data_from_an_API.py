@@ -11,10 +11,6 @@ user_response = requests.get(
 
 user_data = user_response.json()
 
-if not user_data:
-    print('No employee record found for ID: {}'.format(employee_id))
-    sys.exit()
-
 employee_name = user_data['name']
 
 todos_response = requests.get(
